@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from rolepermissions.roles import assign_role
 from .forms import RegisterForm
 
 
@@ -8,7 +10,8 @@ def cadastro(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            assign_role(user, "client")
             messages.success(request, "Cadastro realizado com sucesso!")
             return redirect("login")
     else:
@@ -34,6 +37,7 @@ def login_view(request):
     return render(request, "usuarios/login.html")
 
 
+@login_required(login_url="login")
 def logout_view(request):
     logout(request)
     messages.success(request, "Você saiu da sua conta com sucesso.")
