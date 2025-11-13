@@ -14,21 +14,59 @@
     </div>
 {% endif %}
 
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>Soluções Completas em
-            <span>Informática e Design</span>
-        </h1>
-        <p>Transformamos suas necessidades tecnológicas em soluções profissionais e eficientes</p>
-        <div class="hero-buttons">
-            <a href="https://wa.me/5511999999999" class="btn-primary">Fale Conosco Agora</a>
-            <a href="servicos" class="btn-secondary">Ver Nossos Serviços</a>
-            <a href="produtos" class="btn-tertiary">Ver Nossos Produtos</a>
+<div class="mx-4 md:mx-8 lg:mx-16">
+  <!-- Botão de adicionar novo serviço -->
+  <div class="flex justify-end my-6">
+    <a href="{% url 'criar_servico' %}"
+       class="px-5 py-2.5 bg-green-600 text-white font-medium rounded-lg shadow hover:bg-green-700 transition">
+      + Novo Serviço
+    </a>
+  </div>
 
+<div class="space-y-4">
+  {% for servico in servicos %}
+    <div class="flex items-start justify-between gap-6 bg-white rounded-xl shadow p-6 hover:shadow-lg transition w-full">
+
+      <!-- Imagem + texto -->
+      <div class="flex items-start gap-6">
+        {% if servico.imagem %}
+          <img src="{{ servico.imagem.url }}" alt="{{ servico.titulo }}" class="w-24 h-24 object-cover rounded-lg flex-shrink-0">
+        {% else %}
+          <div class="w-24 h-24 bg-gray-100 flex items-center justify-center text-gray-500 text-sm rounded-lg flex-shrink-0">
+            Imagem
+          </div>
+        {% endif %}
+
+        <div class="min-w-0">
+          <h2 class="text-lg md:text-xl font-bold text-gray-800 leading-tight mb-1">
+            {{ servico.titulo }}
+          </h2>
+
+          <p class="text-gray-600 text-sm md:text-base">
+            {{ servico.descricao }}
+          </p>
         </div>
+      </div>
+
+      <!-- Ações -->
+      <div class="flex flex-col items-end gap-2">
+        <a href="{% url 'editar_servico' servico.id %}" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+          Editar
+        </a>
+
+        <form method="post" action="{% url 'deletar_servico' servico.id %}" onsubmit="return confirm('Tem certeza que deseja remover este serviço?');">
+          {% csrf_token %}
+          <button type="submit" class="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+            Remover
+          </button>
+        </form>
+      </div>
     </div>
-</section>
+  {% empty %}
+    <p class="text-gray-500">Nenhum serviço cadastrado.</p>
+  {% endfor %}
+</div>
+</div>
 
 
 {% endblock %}

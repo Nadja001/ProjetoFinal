@@ -18,8 +18,9 @@ header {
   margin: auto;
   padding: 16px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 20px;
 }
 .logo-icon {
   width: 40px;
@@ -49,6 +50,9 @@ nav a:hover {
 }
 .hero-buttons {
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 .btn-primary,
 .btn-secondary,
@@ -123,4 +127,28 @@ footer {
   border-top: 1px solid #1e293b;
   color: #94a3b8;
   font-size: 13px;
+}
+
+.img-logo {
+  margin-left: 440px;
+  margin-right: 100px;
+}
+
+.logo-container {
+  margin: 0 auto;
+}
+
+.whats-icon {
+  font-size: 30px;
+  color: white;
+}
+
+.whats-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+    width: 600px;
 }
