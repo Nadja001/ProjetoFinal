@@ -1,12 +1,46 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Produtos - Tecmt{% endblock %}
 
 {% block content %}
-<h1>Produtos</h1>
-<ul>
-    {% for produto in produtos %}
-    <li>{{ produto.nome }} - R$ {{ produto.preco }} (Estoque: {{ produto.estoque }})</li>
-    {% empty %}
-    <li>Sem produtos no momento.</li>
-    {% endfor %}
-</ul>
+<section class="px-6 py-10 bg-gray-50">
+    <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Nossos Produtos</h1>
+    <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">
+        Veja abaixo os produtos disponíveis em nossa loja.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for produto in produtos %}
+        <div class="border rounded-xl p-5 shadow-md bg-white hover:shadow-lg transition duration-200">
+            {% if produto.foto %}
+            <img src="{{ produto.foto.url }}" alt="{{ produto.nome }}" class="rounded-md mb-4 w-full h-48 object-cover">
+            {% endif %}
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ produto.nome }}</h2>
+            <p class="text-sm text-gray-600 mb-2">Marca: {{ produto.marca }}</p>
+            <p class="font-semibold text-blue-700 mb-2">R$ {{ produto.preco }}</p>
+
+            <div class="flex justify-between items-center mt-3">
+                <a href="{% url 'detalhar_produto' produto.pk %}" class="text-blue-600 hover:underline">Ver detalhes</a>
+
+                {% if user.is_authenticated and user.is_staff %}
+                <div class="flex space-x-3">
+                    <a href="{% url 'editar_produto' produto.pk %}" class="text-blue-600 hover:underline">Editar</a>
+                    <a href="{% url 'deletar_produto' produto.pk %}" class="text-blue-600 hover:underline">Excluir</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center col-span-3 text-gray-500">Nenhum produto disponível no momento.</p>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="text-center mt-8">
+        <a href="{% url 'cadastrar_produto' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium">
+            + Cadastrar novo produto
+        </a>
+    </div>
+    {% endif %}
+</section>
 {% endblock %}

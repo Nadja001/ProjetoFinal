@@ -1,12 +1,48 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Serviços - Tecmt{% endblock %}
 
 {% block content %}
-<h1>Serviços</h1>
-<ul>
-    {% for servico in servicos %}
-    <li>{{ servico.titulo }} - a partir de R$ {{ servico.preco_base }}</li>
-    {% empty %}
-    <li>Sem serviços cadastrados.</li>
-    {% endfor %}
-</ul>
+<section class="px-6 py-10 bg-gray-50">
+    <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Nossos Serviços</h1>
+    <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">
+        Soluções em tecnologia, manutenção e design sob medida para você.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for servico in servicos %}
+        <div class="border rounded-xl p-5 shadow-md bg-white hover:shadow-lg transition duration-200">
+            
+            {% if servico.foto %}
+            <img src="{{ servico.foto.url }}" alt="{{ servico.titulo }}" class="w-full h-48 object-cover rounded-md mb-3">
+            {% endif %}
+
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ servico.titulo }}</h2>
+            <p class="text-gray-600 text-sm mb-3">{{ servico.descricao|truncatewords:25 }}</p>
+            <p class="font-semibold text-blue-700">A partir de R$ {{ servico.preco_base }}</p>
+
+            <div class="mt-4 flex justify-between items-center">
+                <a href="{% url 'detalhar_servico' servico.pk %}" class="text-blue-600 hover:underline">
+                    Ver detalhes
+                </a>
+                {% if user.is_authenticated and user.is_staff %}
+                <div class="flex gap-2">
+                    <a href="{% url 'editar_servico' servico.pk %}" class="text-blue-500 hover:underline">Editar</a>
+                    <a href="{% url 'deletar_servico' servico.pk %}" class="text-blue-500 hover:underline">Excluir</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="text-center mt-8">
+        <a href="{% url 'cadastrar_servico' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium">
+            + Cadastrar novo serviço
+        </a>
+    </div>
+    {% endif %}
+</section>
+
 {% endblock %}

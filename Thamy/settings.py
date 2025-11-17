@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'usuarios',
     'widget_tweaks',
     'rolepermissions',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "usuarios.Usuario"
 
 ROLEPERMISSIONS_MODULE = 'Thamy.roles'
+
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

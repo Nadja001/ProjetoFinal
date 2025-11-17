@@ -3,7 +3,6 @@
 {% block title %}Início - Tecmt{% endblock %}
 
 {% block content %}
-
 {% if messages %}
     <div class="mb-4">
         {% for message in messages %}
@@ -22,13 +21,12 @@
         </h1>
         <p>Transformamos suas necessidades tecnológicas em soluções profissionais e eficientes</p>
         <div class="hero-buttons">
-            <a href="https://wa.me/5511999999999" class="btn-primary">Fale Conosco Agora</a>
-            <a href="servicos" class="btn-secondary">Ver Nossos Serviços</a>
-            <a href="produtos" class="btn-tertiary">Ver Nossos Produtos</a>
-
+            <a href="https://wa.me/5584999999999" class="btn-primary">Fale Conosco</a>
+            <a href="{% url 'servicos' %}" class="btn-secondary">Nossos Serviços</a>
+            <a href="{% url 'produtos' %}" class="btn-tertiary">Nossos Produtos</a>
         </div>
     </div>
 </section>
 
-
+<hr class="my-8">
 {% endblock %}
