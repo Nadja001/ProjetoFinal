@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.core.paginator import Paginator
 from .forms import ProdutoForm, ServicoForm
 from .models import Produto, Servico
+from django.db.models import Q
 
 
 def lista_produtos(request):
@@ -36,14 +37,35 @@ def deletar_produto(request, id):
 
 
 def index(request):
-    servicos = Servico.objects.all()
-    return render(request, "index.html", {"servicos": servicos})
+    search = request.GET.get("search", "")
+
+    servicos_list = Servico.objects.filter(is_design=False)
+
+    if search:
+        servicos_list = servicos_list.filter(
+            Q(titulo__icontains=search)
+        )
+
+    servicos_list = servicos_list.order_by('-id')
+
+    paginator = Paginator(servicos_list, 10)
+    page_number = request.GET.get('page')
+    servicos = paginator.get_page(page_number)
+
+    context = {
+        "servicos": servicos,
+        "search": search,
+    }
+
+    return render(request, "index.html", context)
 
 def criar_servico(request):
     if request.method == "POST":
-        form = ServicoForm(request.POST)
+        form = ServicoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            if form.cleaned_data.get("is_design"):
+                return redirect("designs")
             return redirect("index")
     else:
         form = ServicoForm()
@@ -65,3 +87,25 @@ def deletar_servico(request, id):
     if request.method == "POST":
         servico.delete()
         return redirect("index")
+
+def listar_designs(request):
+    search = request.GET.get("search", "")
+
+    servicos_list = Servico.objects.filter(is_design=True)
+
+    if search:
+        servicos_list = servicos_list.filter(
+            Q(titulo__icontains=search)
+        )
+
+    servicos_list = servicos_list.order_by('-id')
+
+    paginator = Paginator(servicos_list, 10)
+    page_number = request.GET.get('page')
+    servicos = paginator.get_page(page_number)
+
+    context = {
+        "servicos": servicos,
+        "search": search,
+    }
+    return render(request, "designs.html", context)

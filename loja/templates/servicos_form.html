@@ -34,6 +34,15 @@
         {{ form.imagem|add_class:"w-full text-sm text-gray-700" }}
       </div>
 
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">É um design?</label>
+
+        <label class="flex items-center gap-2 cursor-pointer">
+          {{ form.is_design|add_class:"peer h-4 w-4 rounded border-gray-300 text-primary-red focus:ring-primary-red" }}
+          <span class="text-sm text-gray-700">Sim</span>
+        </label>
+      </div>
+
       <!-- Botão -->
       <div class="pt-4">
         <button type="submit" class="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition">

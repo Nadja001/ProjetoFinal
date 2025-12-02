@@ -14,11 +14,11 @@ header {
   z-index: 50;
 }
 .header-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: auto;
   padding: 16px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 20px;
 }
@@ -130,7 +130,7 @@ footer {
 }
 
 .img-logo {
-  margin-left: 440px;
+  margin-left: 150px;
   margin-right: 100px;
 }
 
@@ -150,5 +150,11 @@ footer {
 }
 
 .logo {
-    width: 600px;
+    width: 300px;
+}
+
+.itens-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }

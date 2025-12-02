@@ -17,18 +17,7 @@ class Servico(models.Model):
     descricao = models.TextField()
     preco_base = models.DecimalField(max_digits=8, decimal_places=2)
     imagem = models.ImageField(upload_to='images/', blank=True)
+    is_design = models.BooleanField(default=False)
 
     def __str__(self):
         return self.titulo
-
-class Tipo_Midia(models.Model):
-    tipo = models.CharField(max_length=50) #stories(foto ou video), feed, reels, etc. 
-
-class Midia(models.Model):
-    tipo = models.ForeignKey(Tipo_Midia, on_delete=models.CASCADE)
-    descricao =  models.TextField()
-    valor = models.DecimalField(max_digits=8, decimal_places=2)
-    
-    def __str__(self):
-        return self.pk 
-    

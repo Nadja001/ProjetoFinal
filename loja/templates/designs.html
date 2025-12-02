@@ -26,8 +26,6 @@
       </a>
 
   </div>
-
-
 <div class="space-y-4">
   {% for servico in servicos %}
     <div class="flex items-start justify-between gap-6 bg-white rounded-xl shadow p-6 hover:shadow-lg transition w-full">
@@ -68,10 +66,10 @@
       </div>
     </div>
   {% empty %}
-    <p class="text-gray-500">Nenhum serviço cadastrado.</p>
+    <p class="text-gray-500">Nenhum design cadastrado.</p>
   {% endfor %}
-  <div class="mt-6">
-    {% include 'paginacao.html' %}
+    <div class="mt-6">
+        {% include 'paginacao.html' %}
 </div>
 </div>
 
