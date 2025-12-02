@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load permission_tags %}
 
 {% block title %}Início - Tecmt{% endblock %}
 
@@ -20,12 +21,17 @@
 
       {% include 'busca.html' %}
 
-      <a href="{% url 'criar_servico' %}"
+      {% if request.user|has_role:"Admin" %}
+      <a href="{% url 'criar_produto' %}"
          class="px-5 py-2.5 bg-green-600 text-white font-medium rounded-lg shadow hover:bg-green-700 transition">
-        + Novo Serviço
+        + Novo Produto
       </a>
+      {% endif %}
 
   </div>
+
+</div>
+
 
 
 <div class="space-y-4">
