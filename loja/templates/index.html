@@ -22,9 +22,9 @@
       {% include 'busca.html' %}
 
       {% if request.user|has_role:"Admin" %}
-      <a href="{% url 'criar_produto' %}"
+      <a href="{% url 'criar_servico' %}"
          class="px-5 py-2.5 bg-green-600 text-white font-medium rounded-lg shadow hover:bg-green-700 transition">
-        + Novo Produto
+        + Novo Serviço
       </a>
       {% endif %}
 
