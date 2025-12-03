@@ -40,21 +40,30 @@
             {{ produto.nome }}
           </h2>
 
-          <p class="text-gray-600 text-sm md:text-base mb-3">
+          <p class="text-gray-600 text-sm md:text-base">
             {{ produto.descricao }}
           </p>
 
-          <div class="flex flex-wrap gap-3">
-            <a href="{% url 'editar_produto' produto.id %}"
-               class="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition">
+          {% if produto.preco %}
+            <p class="text-green-600 font-semibold text-base mb-2 md:text-lg mt-2">
+              R$ {{ produto.preco }}
+            </p>
+          {% endif %}
+
+           <!-- Ações -->
+          <div class="flex flex-col items-end gap-2">
+            <a href="{% url 'editar_produto' produto.id %}" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
               Editar
             </a>
-            <a href="{% url 'deletar_produto' produto.id %}"
-               class="px-4 py-2 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600 transition"
-               onclick="return confirm('Tem certeza que deseja remover este produto?')">
-              Remover
-            </a>
+
+            <form method="post" action="{% url 'deletar_produto' produto.id %}" onsubmit="return confirm('Tem certeza que deseja remover este produto?');">
+              {% csrf_token %}
+              <button type="submit" class="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                Remover
+              </button>
+            </form>
           </div>
+        </div>
         </div>
       </div>
     {% empty %}

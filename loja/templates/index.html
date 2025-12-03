@@ -56,6 +56,12 @@
           <p class="text-gray-600 text-sm md:text-base">
             {{ servico.descricao }}
           </p>
+
+          {% if servico.preco_base %}
+            <p class="text-green-600 font-semibold text-base md:text-lg mt-2">
+              R$ {{ servico.preco_base }}
+            </p>
+          {% endif %}
         </div>
       </div>
 
