@@ -7,14 +7,30 @@ from rolepermissions.decorators import has_role_decorator
 from django.contrib.auth.decorators import login_required
 
 def lista_produtos(request):
-    search = request.GET.get("search", "")
+    nome = request.GET.get("nome", "")
+    preco_min = request.GET.get("preco_min", "")
+    preco_max = request.GET.get("preco_max", "")
+    ativo = request.GET.get("ativo", "")
 
     produtos_list = Produto.objects.all()
 
-    if search:
+    # Filtro por nome
+    if nome:
         produtos_list = produtos_list.filter(
-            Q(nome__icontains=search)
+            Q(nome__icontains=nome)
         )
+
+    # Filtro por preço mínimo
+    if preco_min:
+        produtos_list = produtos_list.filter(preco__gte=preco_min)
+
+    # Filtro por preço máximo
+    if preco_max:
+        produtos_list = produtos_list.filter(preco__lte=preco_max)
+
+    # Filtro por ativo
+    if ativo:
+        produtos_list = produtos_list.filter(ativo=ativo)
 
     produtos_list = produtos_list.order_by('-id')
 
@@ -24,9 +40,10 @@ def lista_produtos(request):
 
     context = {
         "produtos": produtos,
-        "search": search,
+        "request_get": request.GET,  # preserva valores no formulário
     }
     return render(request, "produtos.html", context)
+
 
 @has_role_decorator('Admin')
 @login_required(login_url='/usuarios/login/')
@@ -62,14 +79,24 @@ def deletar_produto(request, id):
 
 
 def index(request):
-    search = request.GET.get("search", "")
+    titulo = request.GET.get("titulo", "")
+    preco_min = request.GET.get("preco_min", "")
+    preco_max = request.GET.get("preco_max", "")
+    ativo = request.GET.get("ativo", "")
 
     servicos_list = Servico.objects.filter(is_design=False)
 
-    if search:
-        servicos_list = servicos_list.filter(
-            Q(titulo__icontains=search)
-        )
+    if titulo:
+        servicos_list = servicos_list.filter(titulo__icontains=titulo)
+
+    if preco_min:
+        servicos_list = servicos_list.filter(preco_base__gte=preco_min)
+
+    if preco_max:
+        servicos_list = servicos_list.filter(preco_base__lte=preco_max)
+
+    if ativo:
+        servicos_list = servicos_list.filter(ativo=ativo)
 
     servicos_list = servicos_list.order_by('-id')
 
@@ -79,10 +106,9 @@ def index(request):
 
     context = {
         "servicos": servicos,
-        "search": search,
-    }
-
+        "request_get": request.GET,}
     return render(request, "index.html", context)
+
 
 @has_role_decorator('Admin')
 @login_required(login_url='/usuarios/login/')
@@ -120,14 +146,7 @@ def deletar_servico(request, id):
         return redirect("index")
 
 def listar_designs(request):
-    search = request.GET.get("search", "")
-
     servicos_list = Servico.objects.filter(is_design=True)
-
-    if search:
-        servicos_list = servicos_list.filter(
-            Q(titulo__icontains=search)
-        )
 
     servicos_list = servicos_list.order_by('-id')
 
@@ -137,6 +156,5 @@ def listar_designs(request):
 
     context = {
         "servicos": servicos,
-        "search": search,
     }
     return render(request, "designs.html", context)
